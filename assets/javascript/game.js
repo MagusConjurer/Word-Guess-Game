@@ -1,6 +1,6 @@
 var guessGame = {
 
-    words: [],
+    words: ["test"],
     answer: "",
     correctGuess: "",
     usedLetters: "",
@@ -9,14 +9,27 @@ var guessGame = {
 
     // Select a word from the list of words
     startGame: function () {
-        // Set wins to 0 and number of guesses to 10
+
+        // Set the number of guesses to 10
+        numberOfGuesses = 10;
+
         // Use random number to select a word from the array
+        var randNum = Math.floor(Math.random() * this.words.length);
+
         // Make this word the answer
+        this.answer = this.words[randNum];
+
         // Set correctGuess to "_ _ _" with the matching number of spaces
+        this.correctGuess = "";
+        for(i = 0; i < this.answer.length; i++) {
+            this.correctGuess += "_ ";
+        }
     },
 
     // Add a guess to the usedLetters, correctGuess and or answer
     userGuess: function(letter) {
+
+        console.log(letter + " is the guess.");
         // Add to usedLetters
         // Check if letter is in the selected word
             // If it is, replace a the index of the letter in correctGuess
@@ -24,6 +37,9 @@ var guessGame = {
 
     },
 }
+
+// Select a word and set all the values to default
+guessGame.startGame();
 
 // getElementByID each element that is going be be replaced
 
@@ -35,10 +51,7 @@ document.onkeyup = function(event){
     var alphabet = new RegExp(/^[a-z]$/i);
     if(alphabet.test(userInput)){
 
-        console.log(userInput + " is a letter.");
-
-        // Select a word and set all the values to default
-        guessGame.startGame();
+        guessGame.userGuess(userInput);
         
     }    
 }
@@ -50,7 +63,7 @@ var lettersText = document.getElementById("lettersText");
 var numGuesses = document.getElementById("numGuesses");
 
 numWins.textContent = "Wins: " + guessGame.wins;
-wordText.textContent = "_ _ _ _ _"
-lettersText.textContent = "a b c d e"
+wordText.textContent = guessGame.correctGuess;
+lettersText.textContent = guessGame.usedLetters;
 numGuesses.textContent = guessGame.numberOfGuesses;
 
