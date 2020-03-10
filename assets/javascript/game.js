@@ -1,11 +1,11 @@
 var guessGame = {
 
-    words = [],
-    answer = "",
-    correctGuess = "",
-    usedLetters = "",
-    numberOfGuesses = 10,
-    wins = 0,
+    words: [],
+    answer: "",
+    correctGuess: "",
+    usedLetters: "",
+    numberOfGuesses: 10,
+    wins: 0,
 
     // Select a word from the list of words
     startGame: function () {
@@ -26,6 +26,20 @@ var guessGame = {
 }
 
 // getElementByID each element that is going be be replaced
-// startGame
-// Get key event
-// Replace the elements for answer, correctGuess, etc
+
+document.onkeyup = function(event){
+    var userInput = event.key.toLowerCase();
+    
+    // Using regex pattern to identify if input is a letter
+    var alphabet = new RegExp(/^[a-z]$/i);
+    if(alphabet.test(userInput)){
+        
+        console.log(userInput + " is a letter.");
+
+        // Select a word and set all the values to default
+        guessGame.startGame();
+        
+        // Replace the elements for answer, correctGuess, etc
+    }
+}
+
