@@ -6,12 +6,14 @@ var guessGame = {
     usedLetters: "",
     numberOfGuesses: 10,
     wins: 0,
+    roundWon: false,
 
     // Select a word from the list of words
     startGame: function () {
 
         // Set the number of guesses to 10
         numberOfGuesses = 10;
+        roundWon = false;
 
         // Use random number to select a word from the array
         var randNum = Math.floor(Math.random() * this.words.length);
@@ -30,41 +32,39 @@ var guessGame = {
     userGuess: function(letter) {
 
         // Add to usedLetters
-        if(this.usedLetters.includes(letter) == false){
+        if(this.usedLetters.includes(letter) == false && this.numberOfGuesses > 0 && this.roundWon == false){
             this.usedLetters += letter + " ";
-        }
-        // Check if letter is in the selected word
-        if(this.answer.includes(letter) && this.correctGuess.includes(letter) == false && this.numberOfGuesses > 0){
-            // If it is, replace a the index of the letter in correctGuess
-            var splitAnswer = this.answer.split("");
-            var splitGuess = this.correctGuess.split("");
-            console.log(splitAnswer, splitGuess);
-            for(var j = 0; j < splitAnswer.length; j++){
-                console.log("in the loop");
-                if(splitAnswer[j] === letter){
-                    console.log(j, " letter matches index");
-                    if(j == 0){
-                        console.log("index = 0");
-                        splitGuess[j] = letter;
-                        this.correctGuess = splitGuess.join("");
-                    }else{
-                        console.log("index does not = 0");
+
+            // Check if letter is in the selected word
+            if(this.answer.includes(letter) && this.correctGuess.includes(letter) == false && this.numberOfGuesses > 0){
+                // Split the two strings into arrays
+                var splitAnswer = this.answer.split("");
+                var splitGuess = this.correctGuess.split("");
+
+                // Increment through the answer array (allowing for multiple letters)
+                for(var j = 0; j < splitAnswer.length; j++){
+                    if(splitAnswer[j] === letter){
                         splitGuess[j*2] = letter;
                         this.correctGuess = splitGuess.join("");
                     }
                 }
+                this.correctGuess[(this.answer.indexOf(letter))] = letter;
+            }else{
+                // If not, remove one from numberOfGuesses
+                this.numberOfGuesses--;
             }
-            this.correctGuess[(this.answer.indexOf(letter))] = letter;
-            console.log(this.answer.indexOf(letter), this.correctGuess);
-        }else if(this.numberOfGuesses > 0){
-            // If not, remove one from numberOfGuesses
-            this.numberOfGuesses--;
-        }         
+        }
+                 
     },
 }
 
 // Select a word and set all the values to default
 guessGame.startGame();
+
+var numWins = document.getElementById("numWins");
+var wordText = document.getElementById("wordText");
+var lettersText = document.getElementById("lettersText");
+var numGuesses = document.getElementById("numGuesses");
 
 // getElementByID each element that is going be be replaced
 
@@ -79,10 +79,14 @@ document.onkeyup = function(event){
         guessGame.userGuess(userInput);
         
     }
-    var numWins = document.getElementById("numWins");
-    var wordText = document.getElementById("wordText");
-    var lettersText = document.getElementById("lettersText");
-    var numGuesses = document.getElementById("numGuesses");
+
+    // Check for win
+    console.log(guessGame.correctGuess.replace(/ /g, ""));
+
+    if(guessGame.answer === guessGame.correctGuess.replace(/ /g, "") && guessGame.numberOfGuesses > 0 && guessGame.roundWon == false) {
+        guessGame.roundWon = true;
+        guessGame.wins++;
+    }
 
     numWins.textContent = "Wins: " + guessGame.wins;
     wordText.textContent = guessGame.correctGuess;
@@ -90,6 +94,5 @@ document.onkeyup = function(event){
     numGuesses.textContent = guessGame.numberOfGuesses;    
 }
 
-// Replace the elements for answer, correctGuess, etc
 
 
