@@ -29,12 +29,37 @@ var guessGame = {
     // Add a guess to the usedLetters, correctGuess and or answer
     userGuess: function(letter) {
 
-        console.log(letter + " is the guess.");
         // Add to usedLetters
+        if(this.usedLetters.includes(letter) == false){
+            this.usedLetters += letter + " ";
+        }
         // Check if letter is in the selected word
+        if(this.answer.includes(letter) && this.correctGuess.includes(letter) == false && this.numberOfGuesses > 0){
             // If it is, replace a the index of the letter in correctGuess
+            var splitAnswer = this.answer.split("");
+            var splitGuess = this.correctGuess.split("");
+            console.log(splitAnswer, splitGuess);
+            for(var j = 0; j < splitAnswer.length; j++){
+                console.log("in the loop");
+                if(splitAnswer[j] === letter){
+                    console.log(j, " letter matches index");
+                    if(j == 0){
+                        console.log("index = 0");
+                        splitGuess[j] = letter;
+                        this.correctGuess = splitGuess.join("");
+                    }else{
+                        console.log("index does not = 0");
+                        splitGuess[j*2] = letter;
+                        this.correctGuess = splitGuess.join("");
+                    }
+                }
+            }
+            this.correctGuess[(this.answer.indexOf(letter))] = letter;
+            console.log(this.answer.indexOf(letter), this.correctGuess);
+        }else if(this.numberOfGuesses > 0){
             // If not, remove one from numberOfGuesses
-
+            this.numberOfGuesses--;
+        }         
     },
 }
 
@@ -53,17 +78,18 @@ document.onkeyup = function(event){
 
         guessGame.userGuess(userInput);
         
-    }    
+    }
+    var numWins = document.getElementById("numWins");
+    var wordText = document.getElementById("wordText");
+    var lettersText = document.getElementById("lettersText");
+    var numGuesses = document.getElementById("numGuesses");
+
+    numWins.textContent = "Wins: " + guessGame.wins;
+    wordText.textContent = guessGame.correctGuess;
+    lettersText.textContent = guessGame.usedLetters;
+    numGuesses.textContent = guessGame.numberOfGuesses;    
 }
 
 // Replace the elements for answer, correctGuess, etc
-var numWins = document.getElementById("numWins");
-var wordText = document.getElementById("wordText");
-var lettersText = document.getElementById("lettersText");
-var numGuesses = document.getElementById("numGuesses");
 
-numWins.textContent = "Wins: " + guessGame.wins;
-wordText.textContent = guessGame.correctGuess;
-lettersText.textContent = guessGame.usedLetters;
-numGuesses.textContent = guessGame.numberOfGuesses;
 
