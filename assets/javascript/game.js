@@ -1,6 +1,6 @@
 var guessGame = {
 
-    words: ["test"],
+    words: ["test", "why"],
     answer: "",
     correctGuess: "",
     usedLetters: "",
@@ -11,9 +11,12 @@ var guessGame = {
     // Select a word from the list of words
     startGame: function () {
 
+        // Reset the guessed letters.
+        this.usedLetters = "";
+
         // Set the number of guesses to 10
-        numberOfGuesses = 10;
-        roundWon = false;
+        this.numberOfGuesses = 10;
+        this.roundWon = false;
 
         // Use random number to select a word from the array
         var randNum = Math.floor(Math.random() * this.words.length);
@@ -26,17 +29,22 @@ var guessGame = {
         for(i = 0; i < this.answer.length; i++) {
             this.correctGuess += "_ ";
         }
+        
+        
+
+        console.log(randNum, this.answer, this.correctGuess, this.usedLetters);
     },
 
     // Add a guess to the usedLetters, correctGuess and or answer
     userGuess: function(letter) {
+        console.log("In userGuess:", this.answer, this.correctGuess, this.usedLetters, this.roundWon);
 
         // Add to usedLetters
         if(this.usedLetters.includes(letter) == false && this.numberOfGuesses > 0 && this.roundWon == false){
             this.usedLetters += letter + " ";
 
             // Check if letter is in the selected word
-            if(this.answer.includes(letter) && this.correctGuess.includes(letter) == false && this.numberOfGuesses > 0){
+            if(this.answer.includes(letter) && this.correctGuess.includes(letter) == false){
                 // Split the two strings into arrays
                 var splitAnswer = this.answer.split("");
                 var splitGuess = this.correctGuess.split("");
@@ -48,13 +56,11 @@ var guessGame = {
                         this.correctGuess = splitGuess.join("");
                     }
                 }
-                this.correctGuess[(this.answer.indexOf(letter))] = letter;
             }else{
                 // If not, remove one from numberOfGuesses
                 this.numberOfGuesses--;
             }
-        }
-                 
+        }        
     },
 }
 
@@ -93,6 +99,16 @@ document.onkeyup = function(event){
     lettersText.textContent = guessGame.usedLetters;
     numGuesses.textContent = guessGame.numberOfGuesses;    
 }
+
+document.getElementById("button").onclick = function(){
+    guessGame.startGame();
+    console.log(this.answer, this.correctGuess, this.usedLetters);
+    numWins.textContent = "Wins: " + guessGame.wins;
+    wordText.textContent = guessGame.correctGuess;
+    lettersText.textContent = guessGame.usedLetters;
+    numGuesses.textContent = guessGame.numberOfGuesses; 
+}
+
 
 
 
