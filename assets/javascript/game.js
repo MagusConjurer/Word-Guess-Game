@@ -71,6 +71,7 @@ var numWins = document.getElementById("numWins");
 var wordText = document.getElementById("wordText");
 var lettersText = document.getElementById("lettersText");
 var numGuesses = document.getElementById("numGuesses");
+var gameImage = document.getElementById("gameImage");
 
 // getElementByID each element that is going be be replaced
 
@@ -91,7 +92,14 @@ document.onkeyup = function(event){
 
     if(guessGame.answer === guessGame.correctGuess.replace(/ /g, "") && guessGame.numberOfGuesses > 0 && guessGame.roundWon == false) {
         guessGame.roundWon = true;
+        gameImage.src = "assets/images/clipart_library_treasure.gif";
+        gameImage.alt = "Treasure for the winner";
         guessGame.wins++;
+    }
+
+    if(guessGame.numberOfGuesses == 0){
+        gameImage.src = "assets/images/clipartix_dragonfire.gif";
+        gameImage.alt = "Angry dragon";
     }
 
     numWins.textContent = "Wins: " + guessGame.wins;
@@ -103,6 +111,8 @@ document.onkeyup = function(event){
 document.getElementById("button").onclick = function(){
     guessGame.startGame();
     console.log(this.answer, this.correctGuess, this.usedLetters);
+    gameImage.src = "assets/images/clipartix_dragon.png";
+    gameImage.alt = "Fun dragon";
     numWins.textContent = "Wins: " + guessGame.wins;
     wordText.textContent = guessGame.correctGuess;
     lettersText.textContent = guessGame.usedLetters;
