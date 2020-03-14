@@ -1,6 +1,6 @@
 var guessGame = {
 
-    words: ["test", "why"],
+    words: ["dragon", "fire", "hoard", "cavern", "wings", "claws"],
     answer: "",
     correctGuess: "",
     usedLetters: "",
